@@ -3,15 +3,22 @@ This project allows integration with Google Drive using the Google Drive API. It
 
 
 ##Requirements
+
 PHP 7.4
+
 Web Server (e.g., Apache or Nginx)
+
 Google Cloud Console to configure the project and obtain the necessary credentials
 
 
 ##Features
+
 File Upload: Upload files to Google Drive.
+
 File Download: Download files from Google Drive.
+
 File Deletion: Delete files from Google Drive.
+
 File Listing: List the most recent files from Google Drive.
 
 
