@@ -44,63 +44,110 @@ Ensure your project structure contains the google-api-php-client folder and the 
 This file handles authentication with Google Drive using the credentials.json file you obtained from the Google Cloud Console.
 
 <?php
+
 session_start();
+
 require_once dirname(__FILE__) . '/google-api-php-client/vendor/autoload.php';
 
+
 $client = new Google_Client();
+
 $client->setAuthConfig('credentials.json');
+
 $client->setRedirectUri('https://your_project_name/');
+
 $client->addScope(Google_Service_Drive::DRIVE);
+
 $client->setAccessType('offline');
+
 $client->setPrompt('select_account consent');
 
+
 if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
+
     $client->setAccessToken($_SESSION['access_token']);
+    
 
     if ($client->isAccessTokenExpired()) {
+    
         if ($client->getRefreshToken()) {
+        
             $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
+            
             $_SESSION['access_token'] = $client->getAccessToken();
+            
         } else {
+        
             unset($_SESSION['access_token']);
+            
             header('Location: index.php');
+            
             exit();
+            
         }
+        
     }
+    
 } elseif (basename($_SERVER['PHP_SELF']) !== 'index.php') {
+
     header('Location: index.php');
+    
     exit();
+    
 }
 
+
 $service = new Google_Service_Drive($client);
+
 ?>
+
 
 ##Step 4: File Structure
 Your project should have the following directory structure:
 
 /googleDrive
+
 │
+
 ├── /google-api-php-client/          # Google API Client Library
+
 │
+
 ├── google-drive-config.php         # Google Drive API Configuration
+
 ├── index.php                       # Login page
+
 ├── dashboard.php                   # Dashboard to interact with files
+
 ├── upload.php                      # File upload page 
+
 ├── download.php                    # File download page
+
 ├── delete.php                      # File deletion page
+
 └── credentials.json                # Google credentials file
 
+
 ###Step 5: index.php File
+
 The index.php file is the login page, where the user can authenticate with their Google account. The authentication flow will redirect the user to Google, and once authenticated, they will be redirected back to your site.
 
 <?php
+
 // If the user's access is not authorized, redirect to the authentication
+
 if (!isset($_SESSION['access_token']) || !$_SESSION['access_token']) {
+
     $authUrl = $client->createAuthUrl();
+    
     header("Location: " . $authUrl);
+    
     exit();
+    
 }
+
 ?>
+
 After login, the user will be redirected to the main page, where they can interact with Google Drive files.
 
 
