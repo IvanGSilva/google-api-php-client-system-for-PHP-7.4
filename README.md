@@ -85,7 +85,7 @@ Your project should have the following directory structure:
 ├── google-drive-config.php         # Google Drive API Configuration
 ├── index.php                       # Login page
 ├── dashboard.php                   # Dashboard to interact with files
-├── upload.php                      # File upload page
+├── upload.php                      # File upload page 
 ├── download.php                    # File download page
 ├── delete.php                      # File deletion page
 └── credentials.json                # Google credentials file
