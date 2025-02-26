@@ -44,7 +44,7 @@ Ensure your project structure contains the google-api-php-client folder and the 
 This file handles authentication with Google Drive using the credentials.json file you obtained from the Google Cloud Console.
 
 /google-drive-config.php: 
-                        VVVVVVVVVVVVVVVVVVVVVVVVVVVVV
+.                       VVVVVVVVVVVVVVVVVVVVVVVVVVVVV
 $client->setRedirectUri('https://your_project_name/');
 
 
