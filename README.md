@@ -1,96 +1,92 @@
-# Google Drive Integration Project - PHP 7.4
-This project allows integration with Google Drive using the Google Drive API. It provides functionalities such as uploading, downloading, deleting files, and viewing files directly from a PHP application.
+# Google Drive PHP File Upload, Download, and Delete
 
+This application allows users to interact with their Google Drive account through a simple PHP web interface. It supports uploading, downloading, and deleting files from Google Drive. Users can select specific folders in Google Drive for these actions.
 
-##Requirements
+## Features
+- **Upload** files to Google Drive.
+- **Download** files from Google Drive, retaining the correct file format.
+- **Delete** files from Google Drive.
+- **Select folders** in Google Drive for organizing files.
+- **Create new folders** in Google Drive (to be added if needed).
 
-PHP 7.4
+## Prerequisites
+- PHP 7.4 
+- A Google Cloud project with the Google Drive API enabled
+- Google API PHP Client version 2.16.0 for PHP 7.4 (downloaded without Composer)
+- **credentials.json** file from the Google Cloud Console for OAuth2 authentication
 
-Web Server (e.g., Apache or Nginx)
+## Setup Instructions
 
-Google Cloud Console to configure the project and obtain the necessary credentials
+### Step 1: Download and Install the Google API PHP Client
+1. Download the Google API PHP Client version 2.16.0 from [GitHub](https://github.com/googleapis/google-api-php-client/releases/tag/v2.16.0).
+2. Extract the contents into the project folder.
 
+### Step 2: Enable Google Drive API
+1. Visit the [Google Cloud Console](https://console.cloud.google.com/).
+2. Create a new project or use an existing one.
+3. Enable the **Google Drive API** for the project.
+4. Create **OAuth 2.0 credentials** and download the `credentials.json` file and rename it to "credentials.json" if needed.
+5. Place the `credentials.json` file into the project directory.
 
-##Features
+### Step 3: Configure the Google API Client
+Edit the `google-drive-config.php` file:
+```php
+$client->setAuthConfig('credentials.json');
+$client->setRedirectUri('YOUR_REDIRECT_URI');
+```
+Replace YOUR_REDIRECT_URI with the URL where your OAuth callback will be handled.
 
-File Upload: Upload files to Google Drive.
+### Step 4: Upload the Files
+Navigate to the Upload section of the application.
+Select a file to upload from your local machine.
+Optionally, select a folder where the file should be uploaded.
+The file will be uploaded to your Google Drive in the selected folder (or the root directory if no folder is selected).
 
-File Download: Download files from Google Drive.
+### Step 5: Download the Files
+To download a file, you can either enter the file ID manually or choose from the most recent files listed.
+Click the "Download" button to retrieve the file in the same format as it was originally stored on Google Drive.
 
-File Deletion: Delete files from Google Drive.
+### Step 6: Delete Files
+Choose a folder to list files from.
+Select the file you wish to delete and click the "Delete" button next to it.
+The file will be permanently deleted from your Google Drive.
+File Structure
 
-File Listing: List the most recent files from Google Drive.
+This is the structure of the project:
+```
+.
+├── google-api-php-client/       # Google API PHP Client
+├── credentials.json             # OAuth2 credentials file
+├── google-drive-config.php      # Google API configuration file
+├── index.php                    # Login page
+├──login.php                     # Login script
+├──logout.php                    # Logout script
+├── dashboard                    # Options of the aplication
+├── upload.php                   # File upload script
+├── download.php                 # File download script
+└── delete.php                   # File delete script
+```
 
+### Security Considerations
+Ensure that your credentials.json file is kept secure and not exposed publicly.
 
-##Setup
+Do not store sensitive data (like API keys or client secrets) in your project directory without proper security mechanisms.
 
-###Step 1: Set Up Google Cloud Console
-Go to the Google Cloud Console.
-Create a new project or use an existing project.
-Enable the Google Drive API:
-In the left menu, go to APIs & Services > Library.
-Search for Google Drive API and enable it for your project.
-Configure OAuth 2.0 for authentication:
-Go to APIs & Services > Credentials.
-Click Create Credentials and choose OAuth 2.0 Client ID.
-In the OAuth consent screen, fill out the necessary information (product name, support email).
-Choose Web application as the application type.
-In Authorized redirect URIs, add the redirect URI for your project. Example: https://your_project_name/.
-Download the credentials file (raname it to: credentials.json) and place it in the root of your project.
+When deploying the app, ensure it is running over HTTPS for secure communication.
 
-###Step 2: Download the Google API Client Library
-This project uses the google-api-php-client version 2.16.0, which is compatible with PHP 7.4. To install it without Composer:
+### Troubleshooting
+Authentication issues: If you encounter any issues during authentication, verify that the redirect URI in your google-drive-config.php file matches the one registered in your Google Cloud Console project.
 
-Download the release from GitHub:
+File upload/download issues: If file uploads or downloads are not functioning as expected, verify that:
 
-Go to the google-api-php-client v2.16.0 release.
-Download the ZIP file and extract it into the google-api-php-client folder inside your project.
-Ensure your project structure contains the google-api-php-client folder and the autoload.php file inside it.
+The file size does not exceed Google Drive's API limits;
 
-###Step 3: Configure google-drive-config.php
-This file handles authentication with Google Drive using the credentials.json file you obtained from the Google Cloud Console.
+The file permissions are correct and the app has sufficient access rights to the file;
 
-/google-drive-config.php: $client->setRedirectUri('https://your_project_name/');
+OAuth issues: If the application is not prompting for OAuth consent, ensure that the access token is correctly stored and refreshed in the session.
 
+### License
+This project is licensed under the MIT License - see the LICENSE.md file for details.
 
-
-##Step 4: File Structure
-Your project should have the following directory structure:
-
-/googleDrive
-
-│
-
-├── /google-api-php-client/          # Google API Client Library
-
-│
-
-├── google-drive-config.php         # Google Drive API Configuration
-
-├── index.php                       # Login page
-
-├── dashboard.php                   # Dashboard to interact with files
-
-├── upload.php                      # File upload page 
-
-├── download.php                    # File download page
-
-├── delete.php                      # File deletion page
-
-└── credentials.json                # Google credentials file
-
-
-###Step 5: index.php File
-
-The index.php file is the login page, where the user can authenticate with their Google account. The authentication flow will redirect the user to Google, and once authenticated, they will be redirected back to your site.
-After login, the user will be redirected to the main page, where they can interact with Google Drive files.
-
-
-License
-This project is licensed under the MIT License.
-
-
-Notes
-Redirect URI and Security: Ensure that the redirect URI in the Google Cloud Console matches the one used in the code. Otherwise, the authentication will fail.
-Scope Limitation: The code above uses the scope Google_Service_Drive::DRIVE, which grants full access to the user's Google Drive. Make sure this aligns with the permissions required for your use case.
-Sessions: Using sessions ($_SESSION) is crucial to store the access token, ensuring the user doesn’t have to authenticate each time.
+### Author
+Ivan Gonçalves da Silva
