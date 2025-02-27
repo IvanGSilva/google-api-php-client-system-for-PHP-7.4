@@ -85,6 +85,10 @@ The file permissions are correct and the app has sufficient access rights to the
 
 OAuth issues: If the application is not prompting for OAuth consent, ensure that the access token is correctly stored and refreshed in the session.
 
+Google Drive API documentation: https://developers.google.com/drive/api/guides/about-sdk?hl=pt-br
+
+Useful links: https://www.postman.com/postman/google-api-workspace/documentation/uqkp49c/google-drive-api
+
 ### License
 This project is licensed under the MIT License - see the LICENSE.md file for details.
 
